@@ -2,929 +2,1456 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>✈️ JETVIATOR · PRO PLATFORM (PVP EARNING)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUMMERVIATOR - Aviator Style PvP Arena</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        body {
-            background: #0a0f1a;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-        }
-        .app-container {
-            max-width: 1400px;
-            width: 100%;
-            background: #141f2f;
-            border-radius: 40px;
-            border: 1px solid #2d5580;
-            padding: 24px;
-            box-shadow: 0 30px 60px -20px #000000;
         }
 
-        /* status bar with live indicators */
-        .status-bar {
-            background: #0e1d30;
-            border-radius: 60px;
-            padding: 12px 28px;
-            margin-bottom: 24px;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0B0E17;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a1f2e, #0a0c12);
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(20, 26, 38, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 107, 74, 0.2);
+            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #3467a4;
-            flex-wrap: wrap;
-        }
-        .online-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .online-dot {
-            width: 12px;
-            height: 12px;
-            background: #2ecc71;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } }
-
-        /* main grid */
-        .platform-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 2fr 0.9fr;
-            gap: 20px;
         }
 
-        /* LEFT PANEL - Social & History */
-        .social-panel {
-            background: #102438;
-            border-radius: 32px;
-            padding: 22px;
-            border: 1px solid #346aab;
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF6B4A, #FFA07A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
         }
-        .profile-card {
-            background: linear-gradient(145deg, #1a3150, #0f233b);
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 24px;
-            border: 1px solid #4a7ec0;
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
-        .avatar-large {
-            width: 80px;
-            height: 80px;
-            background: #2d4f7c;
-            border-radius: 50%;
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #FF6B4A;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #FF6B4A;
+            box-shadow: 0 0 10px #FF6B4A;
+        }
+
+        .balance {
+            background: rgba(255, 107, 74, 0.1);
+            border: 1px solid rgba(255, 107, 74, 0.3);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            margin-bottom: 16px;
-            border: 3px solid #ffd966;
+            gap: 0.5rem;
         }
+
+        .balance-icon {
+            color: #FFD700;
+        }
+
+        .balance-amount {
+            font-weight: 700;
+            color: #FF6B4A;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(255,107,74,0.1) 0%, rgba(0,0,0,0) 100%);
+            border-radius: 30px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255,107,74,0.2);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #FF6B4A, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #9CA3AF;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
         }
-        .stat-item {
-            background: #1b3455;
+
+        .stat-card {
+            background: rgba(20, 26, 38, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 16px;
-            text-align: center;
+            padding: 1.5rem;
+            transition: transform 0.3s;
         }
-        .stat-value {
-            font-size: 32px;
-            font-weight: 800;
-            color: #ffde8a;
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #FF6B4A;
         }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
         .stat-label {
-            color: #9bb9e5;
-            font-size: 14px;
+            color: #9CA3AF;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* transaction history */
-        .history-list {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 16px;
-        }
-        .transaction-item {
-            background: #1a3454;
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .tx-type {
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .tx-win { background: #1f5a4a; color: #a2f5c0; }
-        .tx-loss { background: #5a2f3a; color: #ffb0b0; }
-        .tx-deposit { background: #2a4f7a; color: #b8d6ff; }
-
-        /* CENTER PANEL - Game */
-        .game-panel {
-            background: #122c44;
-            border-radius: 42px;
-            padding: 26px;
-            border: 2px solid #3e7fc0;
-        }
-
-        /* provably fair banner */
-        .fair-banner {
-            background: #0c2037;
-            border-radius: 40px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #548cd2;
-        }
-        .seed-info {
-            font-family: monospace;
-            background: #1b3455;
-            padding: 8px 16px;
-            border-radius: 40px;
-            color: #ffe28c;
-            font-size: 14px;
-        }
-
-        /* match info */
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            background: #0a2036;
-            border-radius: 30px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .player-tag {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        .player-status {
-            background: #1f3d62;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-size: 28px;
+        .stat-value {
+            font-size: 2rem;
             font-weight: 700;
-            color: #ffd966;
+            margin-top: 0.5rem;
         }
 
-        /* multiplier area */
-        .multiplier-area {
-            background: #0b1f36;
-            border-radius: 50px;
-            padding: 30px;
-            text-align: center;
-            margin: 20px 0;
-            border: 2px solid #2d6eb0;
-        }
-        .multiplier-value {
-            font-size: 120px;
-            font-weight: 800;
-            color: #fff6cf;
-            text-shadow: 0 0 40px #008cff;
-            line-height: 1;
-        }
-        .progress-track {
-            background: #033158;
-            height: 24px;
-            border-radius: 100px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #1f8cf0, #f9ffb0);
-            transition: width 0.04s;
+        /* Game Selection */
+        .game-section {
+            margin-bottom: 3rem;
         }
 
-        /* RIGHT PANEL - Live Feed & Tournaments */
-        .live-panel {
-            background: #102438;
-            border-radius: 32px;
-            padding: 22px;
-            border: 1px solid #346aab;
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
-        .tournament-card {
-            background: linear-gradient(145deg, #1e375a, #10273f);
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 2px solid #ffd966;
+
+        .section-title span {
+            background: #FF6B4A;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        .game-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .game-card {
+            background: rgba(20, 26, 38, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            border-radius: 30px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
             position: relative;
             overflow: hidden;
         }
-        .tournament-badge {
+
+        .game-card::before {
+            content: '';
             position: absolute;
-            top: 10px;
-            right: -20px;
-            background: #ffd966;
-            color: #1a2a3a;
-            padding: 5px 30px;
-            transform: rotate(45deg);
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #FF6B4A, #FFD700);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+        }
+
+        .game-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 107, 74, 0.2);
+            border-color: #FF6B4A;
+        }
+
+        .game-card.selected {
+            border: 2px solid #FF6B4A;
+            box-shadow: 0 0 30px rgba(255, 107, 74, 0.3);
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-name {
+            font-size: 1.8rem;
             font-weight: 700;
+            margin-bottom: 0.5rem;
         }
-        .live-feed {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .feed-item {
-            background: #1a3454;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border-left: 4px solid;
-            animation: slideIn 0.3s;
-        }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } }
 
-        .feed-win { border-left-color: #2ecc71; }
-        .feed-bet { border-left-color: #f39c12; }
+        .game-description {
+            color: #9CA3AF;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
 
-        /* action buttons */
-        .action-button {
-            background: linear-gradient(145deg, #19588a, #07315a);
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #FF6B4A;
+            font-weight: 600;
+        }
+
+        /* Arena Selection */
+        .arena-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .arena-card {
+            background: rgba(20, 26, 38, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .arena-card:hover {
+            border-color: #FF6B4A;
+            transform: scale(1.05);
+        }
+
+        .arena-card.selected {
+            background: linear-gradient(135deg, rgba(255,107,74,0.2), rgba(255,215,0,0.1));
+            border-color: #FF6B4A;
+        }
+
+        .arena-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .arena-stake {
+            color: #FF6B4A;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Game Canvas */
+        .game-container {
+            background: rgba(20, 26, 38, 0.95);
+            border-radius: 30px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #0B0E17;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 107, 74, 0.3);
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .target-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 107, 74, 0.2);
+            border: 1px solid #FF6B4A;
+            border-radius: 15px;
+            padding: 1rem;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .target-label {
+            color: #9CA3AF;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .target-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+        }
+
+        .multiplier-display {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #FF6B4A;
+            border-radius: 15px;
+            padding: 1rem;
+        }
+
+        .multiplier-label {
+            color: #9CA3AF;
+            font-size: 0.9rem;
+        }
+
+        .multiplier-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFD700;
+        }
+
+        .cashout-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #FF6B4A, #FF8A6A);
             border: none;
             color: white;
-            padding: 16px 32px;
-            border-radius: 60px;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 1.5rem;
+            padding: 1rem 3rem;
+            border-radius: 50px;
             cursor: pointer;
-            transition: 0.1s;
-            border: 2px solid #3498ff;
-            width: 100%;
-            margin: 8px 0;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(255, 107, 74, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .action-button:active { transform: scale(0.98); }
-        .action-button.lock { background: linear-gradient(145deg, #c94f4f, #8b2c2c); border-color: #ff6b6b; }
 
-        .commission-warning {
-            color: #ffb270;
-            font-size: 14px;
+        .cashout-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 107, 74, 0.8);
+        }
+
+        .cashout-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Result Overlay */
+        .result-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .result-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+        }
+
+        .victory {
+            color: #10B981;
+            text-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .defeat {
+            color: #EF4444;
+            text-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+        }
+
+        .result-details {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-box {
+            background: rgba(20, 26, 38, 0.9);
+            border: 1px solid #FF6B4A;
+            border-radius: 20px;
+            padding: 1.5rem;
             text-align: center;
-            margin: 10px 0;
+            min-width: 150px;
+        }
+
+        .result-box-label {
+            color: #9CA3AF;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-box-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .rematch-btn {
+            background: linear-gradient(135deg, #FF6B4A, #FF8A6A);
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 1rem;
+        }
+
+        .newgame-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            background: rgba(20, 26, 38, 0.95);
+            border-radius: 30px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+        }
+
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            color: #9CA3AF;
+            font-weight: 600;
+        }
+
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+
+        .leaderboard-row:hover {
+            background: rgba(255, 107, 74, 0.1);
+        }
+
+        .rank-1 {
+            color: #FFD700;
+        }
+
+        .rank-2 {
+            color: #C0C0C0;
+        }
+
+        .rank-3 {
+            color: #CD7F32;
+        }
+
+        /* Stake Controls */
+        .stake-controls {
+            background: rgba(20, 26, 38, 0.7);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+        }
+
+        .stake-input {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stake-input label {
+            color: #9CA3AF;
+            min-width: 100px;
+        }
+
+        .stake-input input {
+            background: #0B0E17;
+            border: 1px solid rgba(255, 107, 74, 0.3);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            color: white;
+            font-size: 1rem;
+            width: 200px;
+        }
+
+        .stake-input input:focus {
+            outline: none;
+            border-color: #FF6B4A;
+        }
+
+        .stake-presets {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .stake-preset {
+            background: rgba(255, 107, 74, 0.1);
+            border: 1px solid rgba(255, 107, 74, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .stake-preset:hover {
+            background: #FF6B4A;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #6B7280;
+            border-top: 1px solid rgba(255, 107, 74, 0.2);
+            margin-top: 3rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #141A26;
+            border: 1px solid #FF6B4A;
+            border-radius: 30px;
+            padding: 3rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #FF6B4A;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #0B0E17;
+            border: 1px solid rgba(255, 107, 74, 0.3);
+            border-radius: 10px;
+            color: white;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #FF6B4A;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .modal-link {
+            color: #FF6B4A;
+            cursor: pointer;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #141A26;
+            border-left: 4px solid #FF6B4A;
+            border-radius: 10px;
+            padding: 1rem 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
-<div class="app-container" id="app">
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <div class="online-indicator">
-            <span class="online-dot"></span>
-            <span id="onlineCount">247</span> online
+    <!-- Animated Background Canvas -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">SUMMERVIATOR</div>
+        <div class="nav-links">
+            <a href="#" class="nav-link active" onclick="showSection('home')">Home</a>
+            <a href="#" class="nav-link" onclick="showSection('arena')">Arena</a>
+            <a href="#" class="nav-link" onclick="showSection('leaderboard')">Leaderboard</a>
+            <a href="#" class="nav-link" onclick="showSection('profile')">Profile</a>
+            <div class="balance">
+                <span class="balance-icon">💰</span>
+                <span class="balance-amount" id="balanceDisplay">1,000</span>
+            </div>
+            <button class="stake-preset" onclick="logout()" style="background: #FF6B4A;">Logout</button>
         </div>
-        <div class="online-indicator">
-            <span>💰 <span id="globalBalance">0</span> KES</span>
-            <span> | 👤 <span id="usernameHeader">Guest</span></span>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Home Section -->
+        <div id="homeSection">
+            <div class="hero">
+                <h1>SUMMERVIATOR PvP Arena</h1>
+                <p>Experience the thrill of real-time PvP duels with provably fair gameplay. Three unique game modes, instant matches, and high-stakes competition.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-label">Online Players</div>
+                    <div class="stat-value">1,247</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎮</div>
+                    <div class="stat-label">Active Matches</div>
+                    <div class="stat-value">89</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-label">Total Staked</div>
+                    <div class="stat-value">$1.2M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-label">Top Winner</div>
+                    <div class="stat-value">CryptoKing</div>
+                </div>
+            </div>
+
+            <div class="game-section">
+                <h2 class="section-title">Featured Games <span>🔥 NEW</span></h2>
+                <div class="game-cards">
+                    <div class="game-card" onclick="selectGame('SUMMERVIATOR')">
+                        <div class="game-icon">🔥</div>
+                        <div class="game-name">SUMMERVIATOR</div>
+                        <div class="game-description">Heat Threshold Duel - Closest to target without going over wins. Test your precision!</div>
+                        <div class="game-stats">
+                            <span>🎯 2.5x avg</span>
+                            <span>⚡ 1,234 players</span>
+                        </div>
+                    </div>
+                    <div class="game-card" onclick="selectGame('ROCKVIATOR')">
+                        <div class="game-icon">🪨</div>
+                        <div class="game-name">ROCKVIATOR</div>
+                        <div class="game-description">Hold & Release - Test your nerve. Hold as long as possible without exploding!</div>
+                        <div class="game-stats">
+                            <span>🎯 45s avg</span>
+                            <span>⚡ 892 players</span>
+                        </div>
+                    </div>
+                    <div class="game-card" onclick="selectGame('TECHNOVIATOR')">
+                        <div class="game-icon">⚡</div>
+                        <div class="game-name">TECHNOVIATOR</div>
+                        <div class="game-description">Signal Capture - Fastest reaction wins. Click exactly when the signal appears!</div>
+                        <div class="game-stats">
+                            <span>🎯 250ms avg</span>
+                            <span>⚡ 2,156 players</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <button class="action-button" style="width: auto; padding: 8px 20px; display: inline-block; margin: 0 5px;" id="loginBtn">Login</button>
-            <button class="action-button" style="width: auto; padding: 8px 20px; display: inline-block; margin: 0 5px;" id="registerBtn">Register</button>
+
+        <!-- Arena Section (Hidden by default) -->
+        <div id="arenaSection" style="display: none;">
+            <div class="game-container">
+                <h2 class="section-title">Arena Matchmaking</h2>
+                
+                <!-- Arena Selection -->
+                <div class="arena-grid">
+                    <div class="arena-card selected" id="arenaSimple" onclick="selectArena('SIMPLE')">
+                        <div class="arena-name">Simple Arena</div>
+                        <div class="arena-stake">$10 - $100</div>
+                    </div>
+                    <div class="arena-card" id="arenaMedium" onclick="selectArena('MEDIUM')">
+                        <div class="arena-name">Medium Arena</div>
+                        <div class="arena-stake">$50 - $500</div>
+                    </div>
+                    <div class="arena-card" id="arenaElite" onclick="selectArena('ELITE')">
+                        <div class="arena-name">Elite Arena</div>
+                        <div class="arena-stake">$100 - $1000</div>
+                    </div>
+                </div>
+
+                <!-- Game Selection -->
+                <div class="game-cards" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 2rem;">
+                    <div class="game-card selected" id="gameSummerviator" onclick="selectGameType('SUMMERVIATOR')">
+                        <div class="game-icon">🔥</div>
+                        <div class="game-name">SUMMERVIATOR</div>
+                    </div>
+                    <div class="game-card" id="gameRockviator" onclick="selectGameType('ROCKVIATOR')">
+                        <div class="game-icon">🪨</div>
+                        <div class="game-name">ROCKVIATOR</div>
+                    </div>
+                    <div class="game-card" id="gameTechnoviator" onclick="selectGameType('TECHNOVIATOR')">
+                        <div class="game-icon">⚡</div>
+                        <div class="game-name">TECHNOVIATOR</div>
+                    </div>
+                </div>
+
+                <!-- Stake Controls -->
+                <div class="stake-controls">
+                    <div class="stake-input">
+                        <label>Stake Amount ($)</label>
+                        <input type="number" id="stakeAmount" value="10" min="10" max="100" onchange="updateStake()">
+                    </div>
+                    <div class="stake-presets">
+                        <div class="stake-preset" onclick="setStake(10)">$10</div>
+                        <div class="stake-preset" onclick="setStake(25)">$25</div>
+                        <div class="stake-preset" onclick="setStake(50)">$50</div>
+                        <div class="stake-preset" onclick="setStake(100)">$100</div>
+                    </div>
+                </div>
+
+                <!-- Game Canvas -->
+                <div class="canvas-wrapper">
+                    <canvas id="gameCanvas"></canvas>
+                    <div class="target-indicator" id="targetIndicator">
+                        <div class="target-label">Hidden Target</div>
+                        <div class="target-value" id="targetValue">???</div>
+                    </div>
+                    <div class="multiplier-display">
+                        <div class="multiplier-label">Current Multiplier</div>
+                        <div class="multiplier-value" id="multiplier">1.00x</div>
+                    </div>
+                    <button class="cashout-btn" id="cashoutBtn" onclick="cashOut()" disabled>CASH OUT</button>
+                    <div id="resultOverlay" class="result-overlay" style="display: none;">
+                        <div class="result-title" id="resultTitle"></div>
+                        <div class="result-details">
+                            <div class="result-box">
+                                <div class="result-box-label">Your Cashout</div>
+                                <div class="result-box-value" id="yourValue">2.45x</div>
+                            </div>
+                            <div class="result-box">
+                                <div class="result-box-label">Opponent</div>
+                                <div class="result-box-value" id="opponentValue">1.98x</div>
+                            </div>
+                            <div class="result-box">
+                                <div class="result-box-label">Target</div>
+                                <div class="result-box-value" id="targetResult">2.15x</div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="rematch-btn" onclick="rematch()">REMARCH</button>
+                            <button class="newgame-btn" onclick="newGame()">NEW GAME</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Queue Button -->
+                <button class="cashout-btn" id="queueBtn" onclick="joinQueue()" style="position: static; width: 100%; margin-top: 1rem;">JOIN QUEUE</button>
+                <div id="queueStatus" style="text-align: center; margin-top: 1rem; color: #FF6B4A;"></div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div id="leaderboardSection" style="display: none;">
+            <div class="leaderboard">
+                <h2 class="section-title">Global Leaderboard</h2>
+                <div class="leaderboard-header">
+                    <div>Rank</div>
+                    <div>Player</div>
+                    <div>ELO</div>
+                    <div>W/L</div>
+                    <div>Win Rate</div>
+                </div>
+                <div id="leaderboardRows"></div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profileSection" style="display: none;">
+            <div class="game-container">
+                <h2 class="section-title">Player Profile</h2>
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 6rem; margin-bottom: 1rem;">👤</div>
+                        <h3 id="profileUsername">CryptoWarrior</h3>
+                        <div class="balance" style="justify-content: center; margin-top: 1rem;">
+                            <span class="balance-icon">💰</span>
+                            <span class="balance-amount" id="profileBalance">1,000</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+                            <div class="stat-card">
+                                <div class="stat-icon">🏆</div>
+                                <div class="stat-label">ELO Rating</div>
+                                <div class="stat-value" id="profileELO">1,450</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🎯</div>
+                                <div class="stat-label">Win Rate</div>
+                                <div class="stat-value" id="profileWinRate">63%</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">⚡</div>
+                                <div class="stat-label">Total Matches</div>
+                                <div class="stat-value" id="profileMatches">247</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🎮</div>
+                                <div class="stat-label">Precision</div>
+                                <div class="stat-value" id="profilePrecision">94.2%</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 2rem;">
+                            <h3>Recent Matches</h3>
+                            <div id="recentMatches"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 SUMMERVIATOR PvP Arena. Provably Fair Gaming Platform.</p>
         </div>
     </div>
 
-    <!-- Main Grid -->
-    <div class="platform-grid">
-        <!-- LEFT: Social & History -->
-        <div class="social-panel">
-            <div class="profile-card" id="profileCard">
-                <div class="avatar-large" id="avatar">👤</div>
-                <h2 id="profileName">Guest User</h2>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-value" id="winCount">0</div>
-                        <div class="stat-label">Wins</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="gamesPlayed">0</div>
-                        <div class="stat-label">Games</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="winRate">0%</div>
-                        <div class="stat-label">Win Rate</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="rank">🔰</div>
-                        <div class="stat-label">Rank</div>
-                    </div>
-                </div>
-            </div>
-
-            <h3>📜 Transaction History</h3>
-            <div class="history-list" id="transactionHistory">
-                <!-- populated by JS -->
-            </div>
-
-            <div style="margin-top: 20px;">
-                <input type="number" id="depositInput" placeholder="Amount" style="background:#1e3d62; border:1px solid #4682d3; padding:12px; border-radius:40px; width:100%; margin-bottom:8px; color:white;">
-                <button class="action-button" id="depositBtn">💳 Deposit</button>
-                <div class="commission-warning">Withdrawal: 10% fee</div>
-                <button class="action-button" id="withdrawBtn">💸 Withdraw</button>
-            </div>
-        </div>
-
-        <!-- CENTER: Game -->
-        <div class="game-panel">
-            <!-- Provably Fair Banner -->
-            <div class="fair-banner">
-                <span>🔐 Provably Fair</span>
-                <span class="seed-info" id="clientSeedDisplay">Client: ---</span>
-                <span class="seed-info" id="serverSeedDisplay">Server: ---</span>
-                <span class="seed-info" id="hashDisplay">Hash: ---</span>
-            </div>
-
-            <!-- Match Info -->
-            <div class="match-header">
-                <div class="player-tag">
-                    <span id="playerAName">Waiting</span>
-                    <span class="player-status" id="playerABet">0</span>
-                    <span id="playerALock" style="color:#ffd966;">---</span>
-                </div>
-                <div class="player-tag">VS</div>
-                <div class="player-tag">
-                    <span id="playerBName">Waiting</span>
-                    <span class="player-status" id="playerBBet">0</span>
-                    <span id="playerBLock" style="color:#ffd966;">---</span>
-                </div>
-            </div>
-
-            <!-- Multiplier -->
-            <div class="multiplier-area">
-                <div class="multiplier-value" id="multiplierDisplay">1.00x</div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="progressFill" style="width:0%"></div>
-                </div>
-            </div>
-
-            <!-- Timer & Target -->
-            <div style="display: flex; justify-content: space-between; background: #0c253f; border-radius: 40px; padding: 16px 24px; margin: 16px 0;">
-                <span style="color:#ffd966; font-size:24px;" id="timerDisplay">⏱ 60s</span>
-                <span style="color:#ffb274; font-size:24px;" id="targetDisplay">🎯 Hidden</span>
-            </div>
-
-            <!-- LOCK BUTTON -->
-            <button class="action-button lock" id="lockButton" style="font-size:48px; padding:30px;">🔒 LOCK NOW</button>
-
-            <!-- Winner & Payout -->
-            <div style="background: #0e2843; border-radius: 40px; padding: 20px; margin-top: 20px; display: flex; justify-content: space-between;">
-                <span style="font-size:32px; color:#ffdf8a;" id="winnerDisplay">---</span>
-                <span style="font-size:32px; background:#1b4570; padding:8px 32px; border-radius:40px; color:#baffb0;" id="payoutDisplay">0</span>
-            </div>
-        </div>
-
-        <!-- RIGHT: Live Feed & Tournaments -->
-        <div class="live-panel">
-            <!-- Tournament Card -->
-            <div class="tournament-card">
-                <div class="tournament-badge">LIVE</div>
-                <h3 style="color:#ffd966;">🏆 DAILY TOURNAMENT</h3>
-                <div style="margin:16px 0;">
-                    <div>Prize Pool: <span id="tournamentPool">10,000</span> KES</div>
-                    <div>Entries: <span id="tournamentEntries">42</span>/64</div>
-                    <div style="background:#033158; height:8px; border-radius:20px; margin:10px 0;">
-                        <div style="width:65%; height:100%; background:#ffd966; border-radius:20px;"></div>
-                    </div>
-                </div>
-                <button class="action-button" id="joinTournamentBtn">⚔️ JOIN TOURNAMENT</button>
-            </div>
-
-            <!-- Create Bet -->
-            <div style="margin:20px 0;">
-                <input type="number" id="betAmount" placeholder="Bet amount (min 100)" style="background:#1e3d62; border:1px solid #4682d3; padding:16px; border-radius:40px; width:100%; margin-bottom:8px; color:white;">
-                <button class="action-button" id="createBetBtn">🎲 CREATE BET</button>
-            </div>
-
-            <!-- Open Bets -->
-            <h3>📢 OPEN BETS</h3>
-            <div id="openBetsContainer" style="max-height:200px; overflow-y:auto; margin:10px 0;">
-                <!-- populated -->
-            </div>
-
-            <!-- Live Feed -->
-            <h3>📡 LIVE FEED</h3>
-            <div class="live-feed" id="liveFeed">
-                <!-- populated -->
-            </div>
+    <!-- Login Modal -->
+    <div class="modal active" id="loginModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Welcome to SUMMERVIATOR</h2>
+            <input type="email" class="modal-input" id="loginEmail" placeholder="Email" value="demo@summerviator.com">
+            <input type="password" class="modal-input" id="loginPassword" placeholder="Password" value="demo123">
+            <button class="modal-btn" onclick="login()">Login</button>
+            <p>Don't have an account? <span class="modal-link" onclick="showRegister()">Register</span></p>
         </div>
     </div>
-</div>
 
-<script>
-(function() {
-    // ==================== BACKEND SIMULATION (localStorage) ====================
-    class BackendSimulator {
-        constructor() {
-            this.db = this.loadDB();
-            this.currentUser = null;
-            this.onlineUsers = 247;
-            this.transactions = [];
-            this.liveFeed = [];
-            this.openBets = [];
-            this.tournament = { pool: 10000, entries: 42, max: 64 };
-            this.gameState = this.initialGameState();
-            this.feedListeners = [];
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Create Account</h2>
+            <input type="text" class="modal-input" id="regUsername" placeholder="Username">
+            <input type="email" class="modal-input" id="regEmail" placeholder="Email">
+            <input type="password" class="modal-input" id="regPassword" placeholder="Password">
+            <button class="modal-btn" onclick="register()">Register</button>
+            <p>Already have an account? <span class="modal-link" onclick="showLogin()">Login</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let currentUser = null;
+        let balance = 1000;
+        let currentSection = 'home';
+        let selectedArena = 'SIMPLE';
+        let selectedGame = 'SUMMERVIATOR';
+        let stakeAmount = 10;
+        let inQueue = false;
+        let inGame = false;
+        let gameActive = false;
+        let gameStartTime = 0;
+        let gameDuration = 15000; // 15 seconds
+        let currentMultiplier = 1.0;
+        let targetValue = 0;
+        let submitted = false;
+        let animationFrame;
+        let gameResult = null;
+
+        // Canvas
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Background Animation
+        const bgCanvas = document.getElementById('canvas-bg');
+        const bgCtx = bgCanvas.getContext('2d');
+        
+        function resizeCanvas() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Animated Background
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * bgCanvas.width,
+                y: Math.random() * bgCanvas.height,
+                radius: Math.random() * 2 + 1,
+                speedX: (Math.random() - 0.5) * 0.5,
+                speedY: (Math.random() - 0.5) * 0.5,
+                color: `rgba(255, 107, 74, ${Math.random() * 0.3})`
+            });
         }
 
-        loadDB() {
-            let data = localStorage.getItem('jetviator_db');
-            if (data) return JSON.parse(data);
-            return {
-                users: {
-                    'alex': { password: 'pass', balance: 5000, wins: 12, games: 25, rank: 'Gold' },
-                    'sam': { password: 'pass', balance: 3200, wins: 8, games: 18, rank: 'Silver' }
-                },
-                transactions: [],
-                matches: []
-            };
+        function animateBackground() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            
+            // Draw gradient
+            const gradient = bgCtx.createLinearGradient(0, 0, bgCanvas.width, bgCanvas.height);
+            gradient.addColorStop(0, '#0B0E17');
+            gradient.addColorStop(1, '#1a1f2e');
+            bgCtx.fillStyle = gradient;
+            bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+            
+            // Draw particles
+            particles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+                
+                if (p.x < 0 || p.x > bgCanvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > bgCanvas.height) p.speedY *= -1;
+                
+                bgCtx.beginPath();
+                bgCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                bgCtx.fillStyle = p.color;
+                bgCtx.fill();
+            });
+            
+            requestAnimationFrame(animateBackground);
         }
+        animateBackground();
 
-        saveDB() {
-            localStorage.setItem('jetviator_db', JSON.stringify(this.db));
-        }
-
-        initialGameState() {
-            return {
-                active: false,
-                finished: false,
-                playerA: null,
-                playerB: null,
-                amount: 0,
-                playerALock: null,
-                playerBLock: null,
-                playerALocked: false,
-                playerBLocked: false,
-                multiplier: 1.00,
-                target: 0,
-                clientSeed: '',
-                serverSeed: '',
-                hash: '',
-                timer: 60,
-                crowdBoost: 0,
-                winner: null,
-                payout: 0
-            };
-        }
-
-        // ========== AUTH ==========
-        register(username, password) {
-            if (this.db.users[username]) return { success: false, message: 'User exists' };
-            this.db.users[username] = { password, balance: 1000, wins: 0, games: 0, rank: 'Bronze' };
-            this.saveDB();
-            this.addLiveFeed(`🎉 New player ${username} joined!`);
-            return { success: true };
-        }
-
-        login(username, password) {
-            let user = this.db.users[username];
-            if (!user || user.password !== password) return { success: false };
-            this.currentUser = { username, ...user };
-            this.addLiveFeed(`👋 ${username} logged in`);
-            return { success: true };
-        }
-
-        logout() {
-            this.currentUser = null;
-        }
-
-        // ========== WALLET ==========
-        deposit(username, amount) {
-            if (!this.currentUser || this.currentUser.username !== username) return false;
-            if (amount <= 0) return false;
-            this.db.users[username].balance += amount;
-            this.addTransaction(username, 'deposit', amount, 'completed');
-            this.addLiveFeed(`💰 ${username} deposited ${amount} KES`);
-            this.saveDB();
-            return true;
-        }
-
-        withdraw(username, amount) {
-            if (!this.currentUser || this.currentUser.username !== username) return false;
-            let user = this.db.users[username];
-            if (amount > user.balance) return false;
-            let fee = amount * 0.1;
-            let received = amount - fee;
-            user.balance -= amount;
-            this.addTransaction(username, 'withdraw', amount, `completed (fee: ${fee})`);
-            this.addLiveFeed(`💸 ${username} withdrew ${received} KES`);
-            this.saveDB();
-            return true;
-        }
-
-        addTransaction(user, type, amount, status) {
-            let tx = { user, type, amount, status, timestamp: new Date().toLocaleTimeString() };
-            this.db.transactions.push(tx);
-            if (this.db.transactions.length > 20) this.db.transactions.shift();
-        }
-
-        // ========== BETTING ==========
-        createBet(username, amount) {
-            if (!this.currentUser) return false;
-            if (amount < 100) return false;
-            let user = this.db.users[username];
-            if (!user || user.balance < amount) return false;
-
-            // hold amount (deduct)
-            user.balance -= amount;
-            this.saveDB();
-
-            let bet = { creator: username, amount, id: Date.now(), status: 'open' };
-            this.openBets.push(bet);
-            this.addLiveFeed(`🎲 ${username} created bet of ${amount} KES`);
-            return true;
-        }
-
-        matchBet(username, bet) {
-            if (!this.currentUser || this.gameState.active) return false;
-            if (username === bet.creator) return false;
-            let user = this.db.users[username];
-            if (!user || user.balance < bet.amount) return false;
-
-            // deduct from matcher
-            user.balance -= bet.amount;
-            this.saveDB();
-
-            // remove bet
-            this.openBets = this.openBets.filter(b => b.id !== bet.id);
-
-            // start game
-            this.startGame(bet.creator, username, bet.amount);
-            return true;
-        }
-
-        // ========== GAME ENGINE ==========
-        generateSeeds() {
-            let client = Math.random().toString(36).substring(2,10);
-            let server = Math.random().toString(36).substring(2,15);
-            let hash = this.simpleHash(server + client).substring(0,16);
-            return { client, server, hash };
-        }
-
-        simpleHash(str) {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = ((hash << 5) - hash) + str.charCodeAt(i);
-                hash |= 0;
-            }
-            return Math.abs(hash).toString(16);
-        }
-
-        generateTarget(seed) {
-            let h = parseInt(this.simpleHash(seed).substring(0,8), 16);
-            let num = (h % 200) / 100; // 0-2
-            return (1.5 + num).toFixed(2); // 1.50-3.50
-        }
-
-        startGame(playerA, playerB, amount) {
-            let seeds = this.generateSeeds();
-            this.gameState = this.initialGameState();
-            this.gameState.active = true;
-            this.gameState.playerA = playerA;
-            this.gameState.playerB = playerB;
-            this.gameState.amount = amount;
-            this.gameState.clientSeed = seeds.client;
-            this.gameState.serverSeed = seeds.server;
-            this.gameState.hash = seeds.hash;
-            this.gameState.target = parseFloat(this.generateTarget(seeds.server + seeds.client));
-            this.gameState.timer = 60;
-
-            // Update UI elements
-            updateUI();
-            this.addLiveFeed(`⚔️ MATCH STARTED: ${playerA} vs ${playerB} (${amount} KES)`);
-        }
-
-        lockPlayer(username, multiplier) {
-            if (!this.gameState.active || this.gameState.finished) return false;
-
-            // Determine role
-            let role = null;
-            if (username === this.gameState.playerA) role = 'A';
-            else if (username === this.gameState.playerB) role = 'B';
-            else return false;
-
-            // Check if already locked
-            if (role === 'A' && this.gameState.playerALocked) return false;
-            if (role === 'B' && this.gameState.playerBLocked) return false;
-
-            // Check if trying to lock same as opponent
-            if (role === 'A' && this.gameState.playerBLocked && this.gameState.playerBLock === multiplier) {
-                this.addLiveFeed(`⚠️ ${username} tried to lock same as opponent`);
-                return false;
-            }
-            if (role === 'B' && this.gameState.playerALocked && this.gameState.playerALock === multiplier) {
-                this.addLiveFeed(`⚠️ ${username} tried to lock same as opponent`);
-                return false;
+        // Game Canvas Drawing
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            ctx.strokeStyle = '#2A3440';
+            ctx.lineWidth = 0.5;
+            
+            // Horizontal lines
+            for (let i = 0; i <= 4; i++) {
+                const y = canvas.height * (1 - i / 4);
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.strokeStyle = '#2A3440';
+                ctx.stroke();
             }
 
-            // Lock
-            if (role === 'A') {
-                this.gameState.playerALock = multiplier;
-                this.gameState.playerALocked = true;
-                this.addLiveFeed(`🔒 ${username} locked at ${multiplier.toFixed(2)}x`);
-            } else {
-                this.gameState.playerBLock = multiplier;
-                this.gameState.playerBLocked = true;
-                this.addLiveFeed(`🔒 ${username} locked at ${multiplier.toFixed(2)}x`);
-            }
-
-            // Check if both locked
-            if (this.gameState.playerALocked && this.gameState.playerBLocked) {
-                this.endRound();
-            }
-            return true;
-        }
-
-        endRound() {
-            if (this.gameState.finished) return;
-            this.gameState.finished = true;
-            this.gameState.active = false;
-
-            // Force locks if missing
-            if (!this.gameState.playerALocked) {
-                this.gameState.playerALock = this.gameState.multiplier;
-            }
-            if (!this.gameState.playerBLocked) {
-                this.gameState.playerBLock = this.gameState.multiplier;
-            }
-
-            let pA = this.gameState.playerALock;
-            let pB = this.gameState.playerBLock;
-            let t = this.gameState.target;
-            let winner = null;
-
-            // WINNING LOGIC
-            if (pA < t && pB < t) {
-                winner = (Math.abs(t-pA) < Math.abs(t-pB)) ? 'A' : 'B';
-            } else if (pA >= t && pB < t) winner = 'B';
-            else if (pB >= t && pA < t) winner = 'A';
-            else if (pA >= t && pB >= t) {
-                winner = (pA - t < pB - t) ? 'A' : (pB - t < pA - t) ? 'B' : 'draw';
-            } else winner = 'draw';
-
-            // Calculate pot
-            let basePot = this.gameState.amount * 2;
-            let totalPot = basePot + this.gameState.crowdBoost;
-            let commission = totalPot * 0.05; // 5%
-            let payout = totalPot - commission;
-
-            let winnerName = '';
-            if (winner === 'A') {
-                winnerName = this.gameState.playerA;
-                this.db.users[winnerName].balance += payout;
-                this.db.users[winnerName].wins++;
-            } else if (winner === 'B') {
-                winnerName = this.gameState.playerB;
-                this.db.users[winnerName].balance += payout;
-                this.db.users[winnerName].wins++;
-            } else {
-                // draw: split
-                let half = payout/2;
-                this.db.users[this.gameState.playerA].balance += half;
-                this.db.users[this.gameState.playerB].balance += half;
-                winnerName = 'DRAW';
-            }
-
-            // Update games count
-            this.db.users[this.gameState.playerA].games++;
-            this.db.users[this.gameState.playerB].games++;
-
-            this.gameState.winner = winnerName;
-            this.gameState.payout = payout;
-
-            this.addLiveFeed(`🏁 GAME ENDED: Winner ${winnerName} receives ${payout} KES`);
-            this.saveDB();
-
-            // Update UI
-            updateUI();
-        }
-
-        // ========== SPECTATOR / TIPPING ==========
-        tipPlayer(username, targetPlayer) {
-            if (!this.gameState.active) return false;
-            if (targetPlayer !== this.gameState.playerA && targetPlayer !== this.gameState.playerB) return false;
-
-            let tipAmount = Math.floor(Math.random() * 50) + 20; // simulate tip
-            this.gameState.crowdBoost += tipAmount;
-            this.addLiveFeed(`💎 Spectator tipped ${tipAmount} to ${targetPlayer}`);
-            return true;
-        }
-
-        // ========== LIVE FEED ==========
-        addLiveFeed(message) {
-            let item = { message, timestamp: new Date().toLocaleTimeString(), id: Date.now() + Math.random() };
-            this.liveFeed.unshift(item);
-            if (this.liveFeed.length > 20) this.liveFeed.pop();
-            this.notifyFeedListeners();
-        }
-
-        notifyFeedListeners() {
-            this.feedListeners.forEach(fn => fn(this.liveFeed));
-        }
-
-        onFeedUpdate(callback) {
-            this.feedListeners.push(callback);
-        }
-    }
-
-    // Initialize backend
-    const backend = new BackendSimulator();
-
-    // ========== UI RENDERING ==========
-    function updateUI() {
-        // User info
-        if (backend.currentUser) {
-            let user = backend.db.users[backend.currentUser.username];
-            document.getElementById('globalBalance').innerText = user.balance;
-            document.getElementById('usernameHeader').innerText = backend.currentUser.username;
-            document.getElementById('profileName').innerText = backend.currentUser.username;
-            document.getElementById('avatar').innerText = backend.currentUser.username[0].toUpperCase();
-            document.getElementById('winCount').innerText = user.wins || 0;
-            document.getElementById('gamesPlayed').innerText = user.games || 0;
-            let rate = user.games ? Math.round((user.wins/user.games)*100) : 0;
-            document.getElementById('winRate').innerText = rate + '%';
-            document.getElementById('rank').innerText = user.rank || 'Bronze';
-        }
-
-        // Game state
-        let g = backend.gameState;
-        document.getElementById('multiplierDisplay').innerText = g.multiplier.toFixed(2) + 'x';
-        document.getElementById('progressFill').style.width = Math.min(100, (g.multiplier/5)*100) + '%';
-        document.getElementById('timerDisplay').innerText = `⏱ ${g.timer}s`;
-        document.getElementById('targetDisplay').innerText = g.finished ? `🎯 ${g.target}x` : '🎯 Hidden';
-        document.getElementById('playerAName').innerText = g.playerA || '---';
-        document.getElementById('playerBName').innerText = g.playerB || '---';
-        document.getElementById('playerABet').innerText = g.amount || '0';
-        document.getElementById('playerBBet').innerText = g.amount || '0';
-        document.getElementById('playerALock').innerText = g.playerALocked ? g.playerALock.toFixed(2)+'x' : '---';
-        document.getElementById('playerBLock').innerText = g.playerBLocked ? g.playerBLock.toFixed(2)+'x' : '---';
-        document.getElementById('winnerDisplay').innerText = g.winner || '---';
-        document.getElementById('payoutDisplay').innerText = g.payout || '0';
-
-        // Seeds
-        document.getElementById('clientSeedDisplay').innerText = `Client: ${g.clientSeed || '---'}`;
-        document.getElementById('serverSeedDisplay').innerText = `Server: ${g.serverSeed || '---'}`;
-        document.getElementById('hashDisplay').innerText = `Hash: ${g.hash || '---'}`;
-
-        // Transactions
-        let txHtml = '';
-        backend.db.transactions.slice(-5).reverse().forEach(tx => {
-            let cls = tx.type === 'win' ? 'tx-win' : (tx.type === 'loss' ? 'tx-loss' : 'tx-deposit');
-            txHtml += `<div class="transaction-item"><span class="tx-type ${cls}">${tx.type}</span><span>${tx.amount}</span><span>${tx.timestamp}</span></div>`;
-        });
-        document.getElementById('transactionHistory').innerHTML = txHtml || '<div>No transactions</div>';
-
-        // Open Bets
-        let betsHtml = '';
-        backend.openBets.forEach(bet => {
-            betsHtml += `<div style="background:#1a3454; border-radius:20px; padding:12px; margin:8px 0; display:flex; justify-content:space-between;">
-                <span>${bet.creator}</span>
-                <span style="color:#ffd966;">${bet.amount}</span>
-                <button class="action-button" style="padding:5px 15px;" onclick="window.matchBet('${bet.creator}', ${bet.amount}, ${bet.id})">Match</button>
-            </div>`;
-        });
-        document.getElementById('openBetsContainer').innerHTML = betsHtml || '<div style="color:#aaa;">No open bets</div>';
-
-        // Tournament
-        document.getElementById('tournamentEntries').innerText = backend.tournament.entries;
-    }
-
-    // ========== GAME LOOP ==========
-    setInterval(() => {
-        if (backend.gameState.active && !backend.gameState.finished) {
-            // Increment multiplier
-            backend.gameState.multiplier = parseFloat((backend.gameState.multiplier + 0.015).toFixed(3));
-            if (backend.gameState.multiplier >= 5.0) {
-                backend.endRound();
-            }
-
-            // Decrement timer
-            if (backend.gameState.timer > 0) {
-                backend.gameState.timer--;
-                if (backend.gameState.timer === 0) {
-                    backend.endRound();
+            // Draw multiplier curve
+            const points = 100;
+            
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+            
+            for (let i = 0; i <= points; i++) {
+                const progress = i / points;
+                const value = 1.0 + Math.pow(progress * 4, 1.5);
+                const x = (canvas.width * progress);
+                const y = canvas.height - (canvas.height * ((value - 1) / 4));
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
                 }
             }
-
-            updateUI();
-        }
-    }, 100);
-
-    // Live feed updates
-    backend.onFeedUpdate((feed) => {
-        let html = '';
-        feed.slice(0, 8).forEach(item => {
-            html += `<div class="feed-item feed-win">${item.timestamp} - ${item.message}</div>`;
-        });
-        document.getElementById('liveFeed').innerHTML = html;
-    });
-
-    // ========== EVENT HANDLERS ==========
-    document.getElementById('loginBtn').addEventListener('click', () => {
-        let username = prompt('Username (alex/sam)');
-        let password = prompt('Password (pass)');
-        let res = backend.login(username, password);
-        if (res.success) updateUI();
-        else alert('Login failed');
-    });
-
-    document.getElementById('registerBtn').addEventListener('click', () => {
-        let username = prompt('New username');
-        let password = prompt('Password');
-        if (username && password) {
-            let res = backend.register(username, password);
-            if (res.success) {
-                backend.login(username, password);
-                updateUI();
-            } else alert(res.message);
-        }
-    });
-
-    document.getElementById('depositBtn').addEventListener('click', () => {
-        if (!backend.currentUser) { alert('Login first'); return; }
-        let amt = parseFloat(document.getElementById('depositInput').value);
-        if (amt > 0) {
-            backend.deposit(backend.currentUser.username, amt);
-            updateUI();
-        }
-    });
-
-    document.getElementById('withdrawBtn').addEventListener('click', () => {
-        if (!backend.currentUser) return;
-        let amt = parseFloat(document.getElementById('depositInput').value);
-        if (amt > 0) {
-            backend.withdraw(backend.currentUser.username, amt);
-            updateUI();
-        }
-    });
-
-    document.getElementById('createBetBtn').addEventListener('click', () => {
-        if (!backend.currentUser) { alert('Login first'); return; }
-        let amt = parseFloat(document.getElementById('betAmount').value);
-        if (amt >= 100) {
-            backend.createBet(backend.currentUser.username, amt);
-            updateUI();
-        } else alert('Min 100');
-    });
-
-    window.matchBet = (creator, amount, id) => {
-        if (!backend.currentUser) { alert('Login first'); return; }
-        backend.matchBet(backend.currentUser.username, { creator, amount, id });
-        updateUI();
-    };
-
-    document.getElementById('lockButton').addEventListener('click', () => {
-        if (!backend.currentUser) { alert('Login first'); return; }
-        let res = backend.lockPlayer(backend.currentUser.username, backend.gameState.multiplier);
-        if (!res) alert('Cannot lock now');
-        updateUI();
-    });
-
-    document.getElementById('joinTournamentBtn').addEventListener('click', () => {
-        if (!backend.currentUser) { alert('Login first'); return; }
-        backend.tournament.entries++;
-        backend.addLiveFeed(`🏆 ${backend.currentUser.username} joined tournament!`);
-        updateUI();
-    });
-
-    // Tip buttons (simulated)
-    setInterval(() => {
-        if (backend.gameState.active && Math.random() > 0.7) {
-            let target = Math.random() > 0.5 ? backend.gameState.playerA : backend.gameState.playerB;
-            if (target) {
-                backend.tipPlayer('spectator', target);
-                updateUI();
+            
+            ctx.strokeStyle = '#FF6B4A';
+            ctx.lineWidth = 3;
+            ctx.shadowColor = '#FF6B4A';
+            ctx.shadowBlur = 20;
+            ctx.stroke();
+            
+            // Draw current point
+            if (gameActive) {
+                const progress = Math.min((Date.now() - gameStartTime) / gameDuration, 1);
+                const value = 1.0 + Math.pow(progress * 4, 1.5);
+                const x = canvas.width * progress;
+                const y = canvas.height - (canvas.height * ((value - 1) / 4));
+                
+                ctx.shadowBlur = 30;
+                ctx.beginPath();
+                ctx.arc(x, y, 8, 0, Math.PI * 2);
+                ctx.fillStyle = '#FF6B4A';
+                ctx.fill();
+                
+                ctx.shadowBlur = 0;
+            }
+            
+            // Draw target line if game active
+            if (targetValue > 0 && !gameResult) {
+                const targetY = canvas.height - (canvas.height * ((targetValue - 1) / 4));
+                
+                ctx.beginPath();
+                ctx.setLineDash([5, 5]);
+                ctx.moveTo(0, targetY);
+                ctx.lineTo(canvas.width, targetY);
+                ctx.strokeStyle = '#3B82F6';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            
+            // Draw result line
+            if (gameResult) {
+                const targetY = canvas.height - (canvas.height * ((gameResult.target - 1) / 4));
+                
+                ctx.beginPath();
+                ctx.moveTo(0, targetY);
+                ctx.lineTo(canvas.width, targetY);
+                ctx.strokeStyle = '#10B981';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+            
+            // Draw labels
+            ctx.fillStyle = '#9CA3AF';
+            ctx.font = '12px Inter';
+            ctx.shadowBlur = 0;
+            
+            for (let i = 0; i <= 4; i++) {
+                const value = 1 + i;
+                const y = canvas.height - (canvas.height * (i / 4));
+                ctx.fillText(`${value}x`, 10, y - 5);
             }
         }
-    }, 5000);
 
-    // Initial render
-    updateUI();
-    backend.addLiveFeed('🚀 JETVIATOR PLATFORM LIVE');
-    setInterval(() => {
-        backend.onlineUsers += Math.floor(Math.random() * 3) - 1;
-        document.getElementById('onlineCount').innerText = Math.max(200, backend.onlineUsers);
-    }, 10000);
-})();
-</script>
+        // Game Loop
+        function updateGame() {
+            if (!gameActive) return;
+            
+            const elapsed = Date.now() - gameStartTime;
+            const progress = Math.min(elapsed / gameDuration, 1);
+            
+            currentMultiplier = 1.0 + Math.pow(progress * 4, 1.5);
+            document.getElementById('multiplier').textContent = currentMultiplier.toFixed(2) + 'x';
+            
+            drawGame();
+            
+            if (elapsed >= gameDuration && !submitted) {
+                endGame();
+            } else {
+                animationFrame = requestAnimationFrame(updateGame);
+            }
+        }
+
+        // Start Game
+        function startGame() {
+            gameActive = true;
+            submitted = false;
+            gameStartTime = Date.now();
+            targetValue = 1.0 + (Math.random() * 4.0);
+            
+            document.getElementById('targetIndicator').style.display = 'block';
+            document.getElementById('cashoutBtn').disabled = false;
+            document.getElementById('queueBtn').style.display = 'none';
+            document.getElementById('resultOverlay').style.display = 'none';
+            
+            updateGame();
+        }
+
+        // Cash Out
+        function cashOut() {
+            if (!gameActive || submitted) return;
+            
+            submitted = true;
+            gameActive = false;
+            cancelAnimationFrame(animationFrame);
+            
+            const opponentValue = 1.0 + (Math.random() * 3.0);
+            const youWin = (currentMultiplier <= targetValue && 
+                           (opponentValue > targetValue || currentMultiplier > opponentValue));
+            
+            gameResult = {
+                win: youWin,
+                yourValue: currentMultiplier,
+                opponentValue: opponentValue,
+                target: targetValue
+            };
+            
+            showResult();
+        }
+
+        // End Game (timeout)
+        function endGame() {
+            gameActive = false;
+            cancelAnimationFrame(animationFrame);
+            
+            const opponentValue = 1.0 + (Math.random() * 3.0);
+            
+            gameResult = {
+                win: false,
+                yourValue: currentMultiplier,
+                opponentValue: opponentValue,
+                target: targetValue
+            };
+            
+            showResult();
+        }
+
+        // Show Result
+        function showResult() {
+            document.getElementById('resultOverlay').style.display = 'flex';
+            document.getElementById('cashoutBtn').disabled = true;
+            
+            const resultTitle = document.getElementById('resultTitle');
+            resultTitle.textContent = gameResult.win ? 'VICTORY' : 'DEFEAT';
+            resultTitle.className = 'result-title ' + (gameResult.win ? 'victory' : 'defeat');
+            
+            document.getElementById('yourValue').textContent = gameResult.yourValue.toFixed(2) + 'x';
+            document.getElementById('opponentValue').textContent = gameResult.opponentValue.toFixed(2) + 'x';
+            document.getElementById('targetResult').textValue = gameResult.target.toFixed(2) + 'x';
+            
+            if (gameResult.win) {
+                const winnings = stakeAmount * 1.9;
+                balance += winnings;
+                showNotification(`Victory! You won $${winnings.toFixed(2)}`);
+            } else {
+                balance -= stakeAmount;
+                showNotification(`Defeat! You lost $${stakeAmount}`);
+            }
+            
+            updateBalance();
+        }
+
+        // Join Queue
+        function joinQueue() {
+            if (balance < stakeAmount) {
+                showNotification('Insufficient balance!', 'error');
+                return;
+            }
+            
+            inQueue = true;
+            document.getElementById('queueBtn').disabled = true;
+            document.getElementById('queueBtn').textContent = 'SEARCHING...';
+            document.getElementById('queueStatus').textContent = 'Searching for opponent...';
+            
+            setTimeout(() => {
+                if (inQueue) {
+                    inQueue = false;
+                    document.getElementById('queueBtn').disabled = false;
+                    document.getElementById('queueBtn').textContent = 'JOIN QUEUE';
+                    document.getElementById('queueStatus').textContent = '';
+                    startGame();
+                }
+            }, 3000);
+        }
+
+        // Rematch
+        function rematch() {
+            document.getElementById('resultOverlay').style.display = 'none';
+            startGame();
+        }
+
+        // New Game
+        function newGame() {
+            document.getElementById('resultOverlay').style.display = 'none';
+            document.getElementById('queueBtn').style.display = 'block';
+            document.getElementById('queueBtn').disabled = false;
+            document.getElementById('queueBtn').textContent = 'JOIN QUEUE';
+            currentMultiplier = 1.0;
+            document.getElementById('multiplier').textContent = '1.00x';
+            drawGame();
+        }
+
+        // UI Functions
+        function showSection(section) {
+            currentSection = section;
+            
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('homeSection').style.display = section === 'home' ? 'block' : 'none';
+            document.getElementById('arenaSection').style.display = section === 'arena' ? 'block' : 'none';
+            document.getElementById('leaderboardSection').style.display = section === 'leaderboard' ? 'block' : 'none';
+            document.getElementById('profileSection').style.display = section === 'profile' ? 'block' : 'none';
+            
+            if (section === 'leaderboard') updateLeaderboard();
+            if (section === 'profile') updateProfile();
+        }
+
+        function selectGame(game) {
+            showSection('arena');
+            selectedGame = game;
+            updateGameSelection();
+            showNotification(`Selected ${game}`);
+        }
+
+        function selectArena(arena) {
+            selectedArena = arena;
+            
+            document.querySelectorAll('.arena-card').forEach(card => card.classList.remove('selected'));
+            document.getElementById(`arena${arena}`).classList.add('selected');
+            
+            const stakeInput = document.getElementById('stakeAmount');
+            if (arena === 'SIMPLE') {
+                stakeInput.min = 10;
+                stakeInput.max = 100;
+                if (stakeAmount > 100) setStake(50);
+            } else if (arena === 'MEDIUM') {
+                stakeInput.min = 50;
+                stakeInput.max = 500;
+                if (stakeAmount < 50) setStake(50);
+                if (stakeAmount > 500) setStake(100);
+            } else {
+                stakeInput.min = 100;
+                stakeInput.max = 1000;
+                if (stakeAmount < 100) setStake(100);
+            }
+        }
+
+        function selectGameType(game) {
+            selectedGame = game;
+            updateGameSelection();
+        }
+
+        function updateGameSelection() {
+            document.querySelectorAll('.game-card').forEach(card => card.classList.remove('selected'));
+            document.getElementById(`game${selectedGame}`).classList.add('selected');
+        }
+
+        function setStake(amount) {
+            stakeAmount = amount;
+            document.getElementById('stakeAmount').value = amount;
+        }
+
+        function updateStake() {
+            stakeAmount = parseFloat(document.getElementById('stakeAmount').value);
+        }
+
+        // Login/Register
+        function login() {
+            document.getElementById('loginModal').classList.remove('active');
+            currentUser = {
+                username: 'CryptoWarrior',
+                email: 'demo@summerviator.com'
+            };
+            updateBalance();
+            showNotification('Welcome back, CryptoWarrior!');
+        }
+
+        function register() {
+            document.getElementById('registerModal').classList.remove('active');
+            currentUser = {
+                username: document.getElementById('regUsername').value || 'NewPlayer',
+                email: document.getElementById('regEmail').value
+            };
+            updateBalance();
+            showNotification('Account created successfully!');
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function showRegister() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('registerModal').classList.add('active');
+        }
+
+        function showLogin() {
+            document.getElementById('registerModal').classList.remove('active');
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        // Update Balance
+        function updateBalance() {
+            document.getElementById('balanceDisplay').textContent = balance.toFixed(0);
+            document.getElementById('profileBalance').textContent = balance.toFixed(0);
+        }
+
+        // Show Notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.borderLeftColor = type === 'success' ? '#10B981' : '#EF4444';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Update Leaderboard
+        function updateLeaderboard() {
+            const players = [
+                { rank: 1, name: 'CryptoKing', elo: 2450, wins: 342, losses: 98, winRate: 78 },
+                { rank: 2, name: 'AviatorPro', elo: 2320, wins: 287, losses: 95, winRate: 75 },
+                { rank: 3, name: 'RiskTaker', elo: 2210, wins: 198, losses: 72, winRate: 73 },
+                { rank: 4, name: 'GameMaster', elo: 2150, wins: 165, losses: 65, winRate: 72 },
+                { rank: 5, name: 'LuckyStar', elo: 2080, wins: 143, losses: 58, winRate: 71 },
+                { rank: 6, name: 'CryptoWarrior', elo: 1950, wins: 98, losses: 45, winRate: 69 },
+                { rank: 7, name: 'NeonPlayer', elo: 1840, wins: 76, losses: 38, winRate: 67 },
+                { rank: 8, name: 'DigitalKing', elo: 1720, wins: 54, losses: 29, winRate: 65 },
+                { rank: 9, name: 'CyberSamurai', elo: 1650, wins: 43, losses: 24, winRate: 64 },
+                { rank: 10, name: 'ShadowBlade', elo: 1580, wins: 32, losses: 19, winRate: 63 }
+            ];
+            
+            let html = '';
+            players.forEach(p => {
+                const rankClass = p.rank === 1 ? 'rank-1' : (p.rank === 2 ? 'rank-2' : (p.rank === 3 ? 'rank-3' : ''));
+                html += `
+                    <div class="leaderboard-row">
+                        <div class="${rankClass}">#${p.rank}</div>
+                        <div>${p.name}</div>
+                        <div>${p.elo}</div>
+                        <div>${p.wins}/${p.losses}</div>
+                        <div>${p.winRate}%</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('leaderboardRows').innerHTML = html;
+        }
+
+        // Update Profile
+        function updateProfile() {
+            document.getElementById('profileUsername').textContent = currentUser?.username || 'CryptoWarrior';
+            document.getElementById('profileELO').textContent = '1,450';
+            document.getElementById('profileWinRate').textContent = '63%';
+            document.getElementById('profileMatches').textContent = '247';
+            document.getElementById('profilePrecision').textContent = '94.2%';
+            
+            const matches = [
+                { game: 'SUMMERVIATOR', result: 'WIN', multiplier: '2.45x', profit: '+$45.50' },
+                { game: 'ROCKVIATOR', result: 'LOSS', multiplier: '1.23x', profit: '-$25.00' },
+                { game: 'TECHNOVIATOR', result: 'WIN', multiplier: '3.12x', profit: '+$78.00' }
+            ];
+            
+            let html = '';
+            matches.forEach(m => {
+                html += `
+                    <div class="leaderboard-row" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+                        <div>${m.game}</div>
+                        <div style="color: ${m.result === 'WIN' ? '#10B981' : '#EF4444'}">${m.result}</div>
+                        <div>${m.multiplier}</div>
+                        <div style="color: ${m.profit.startsWith('+') ? '#10B981' : '#EF4444'}">${m.profit}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('recentMatches').innerHTML = html;
+        }
+
+        // Initial draw
+        drawGame();
+
+        // Auto-login for demo
+        setTimeout(() => {
+            if (!currentUser) {
+                login();
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
